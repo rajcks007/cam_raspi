@@ -1,43 +1,6 @@
 from lib import *
 from cam_setup import *
 
-def four_point_transform(image, pts):
-    rect = order_points(pts)
-    (tl, tr, br, bl) = rect
-
-    widthA = numpy.linalg.norm(br - bl)
-    widthB = numpy.linalg.norm(tr - tl)
-    maxWidth = max(int(widthA), int(widthB))
-
-    heightA = numpy.linalg.norm(tr - br)
-    heightB = numpy.linalg.norm(tl - bl)
-    maxHeight = max(int(heightA), int(heightB))
-
-    dst = numpy.array([
-        [0, 0],
-        [maxWidth - 1, 0],
-        [maxWidth - 1, maxHeight - 1],
-        [0, maxHeight - 1]
-    ], dtype="float32")
-
-    M = cv2.getPerspectiveTransform(rect, dst)
-    warped = cv2.warpPerspective(image, M, (maxWidth, maxHeight))
-
-    return warped
-
-def order_points(pts):
-    rect = numpy.zeros((4, 2), dtype="float32")
-    s = pts.sum(axis=1)
-    diff = numpy.diff(pts, axis=1)
-    rect[0] = pts[numpy.argmin(s)]
-    rect[2] = pts[numpy.argmax(s)]
-    rect[1] = pts[numpy.argmin(diff)]
-    rect[3] = pts[numpy.argmax(diff)]
-    
-    return rect
-
-cv2.waitKey(100)
-
 while(1):
     
     cv2.waitKey(50)
@@ -45,33 +8,25 @@ while(1):
     # capture the array in BGR
     image = picam2.capture_array()
 
-    # Convert BGR to HSV
-    # hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-
-    # Convert BGR to GRAY
+    # # Convert BGR to GRAY
     gray = cv2.cvtColor(image, cv2.COLOR_BGRA2GRAY)
-    gray_3channel = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGRA)
-
-    # define range of color in HSV
-    lower_colour = numpy.array([86,3,25])
-    upper_colour = numpy.array([255,160,122])
-
-    # Threshold the HSV image to get only colors
-    # mask = cv2.inRange(hsv, lower_colour, upper_colour)
 
     # Threshold the GRAY image to get only colors
-    mask = cv2.inRange(gray, 110, 255)
+    mask = cv2.inRange(gray, 100, 205)
 
     # Bitwise-AND mask and original image
-    res = cv2.bitwise_and(image,image, mask= mask)
+    # res = cv2.bitwise_and(image,image, mask= mask)
 
     # Preprocess the image and and computing an edge map
-    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-    edged = cv2.Canny(blurred, 50, 200, 255)
+    blurred = cv2.GaussianBlur(image, (7, 7), cv2.BORDER_DEFAULT)
+    edged = cv2.Canny(blurred, 50, 250, apertureSize = 5,  
+                                        L2gradient = True)
 
     # cv2.imshow('Gray', gray)
-    # cv2.imshow("preview",numpy.hstack((image, gray_3channel)))
-    cv2.imshow("Gaussian Smoothing",numpy.hstack((mask, edged)))
+    # cv2.imshow('res', res)
+    # cv2.imshow('preview', image)
+    cv2.imshow('edged', edged)
+    # cv2.imshow("Gaussian Smoothing",numpy.hstack((mask, edged)))
 
     # find contours in the edge map, then sort them by their
     # size in descending order
@@ -83,7 +38,7 @@ while(1):
     # loop over the contours
     for c in cnts:                             # approximate the contour
         peri = cv2.arcLength(c, True)
-        approx = cv2.approxPolyDP(c, 0.02 * peri, True)
+        approx = cv2.approxPolyDP(c, 0.05 * peri, True)
     
         # if the contour has four vertices, then we have found
         # the thermostat display
