@@ -1,9 +1,9 @@
 from lib import *
 from cam_setup import *
 
-def colour_fn():
+def colour_fn(image):
 
-    from cam_main import image          # import function
+    # from cam_main import image          # import function
 
     # # Convert BGR to GRAY
     gray = cv2.cvtColor(image, cv2.COLOR_BGRA2GRAY)

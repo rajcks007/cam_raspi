@@ -13,5 +13,4 @@ video_resolution = (640, 480)  # 640x480 resolution
 config = picam2.create_video_configuration(main={"size": video_resolution})
 
 # set focus of camera
-picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 20.0})
-
+picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 30.0})
