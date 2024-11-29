@@ -1,32 +1,18 @@
 from lib import *
 from cam_setup import *
+from cam_colour import *
 
-while(1):
+def edage_fn():
+
+    # import function
+    from cam_main import image
     
-    cv2.waitKey(50)
-
-    # capture the array in BGR
-    image = picam2.capture_array()
-
-    # # Convert BGR to GRAY
-    gray = cv2.cvtColor(image, cv2.COLOR_BGRA2GRAY)
-
-    # Threshold the GRAY image to get only colors
-    mask = cv2.inRange(gray, 100, 205)
-
-    # Bitwise-AND mask and original image
-    # res = cv2.bitwise_and(image,image, mask= mask)
+    gray, mask = colour_fn()                             # call function
 
     # Preprocess the image and and computing an edge map
     blurred = cv2.GaussianBlur(image, (7, 7), cv2.BORDER_DEFAULT)
     edged = cv2.Canny(blurred, 50, 250, apertureSize = 5,  
                                         L2gradient = True)
-
-    # cv2.imshow('Gray', gray)
-    # cv2.imshow('res', res)
-    # cv2.imshow('preview', image)
-    cv2.imshow('edged', edged)
-    # cv2.imshow("Gaussian Smoothing",numpy.hstack((mask, edged)))
 
     # find contours in the edge map, then sort them by their
     # size in descending order
@@ -53,12 +39,7 @@ while(1):
         # Show the combined image
         # Convert warped image (2D grayscale) to 3 channels
         warped_3channel = cv2.cvtColor(warped, cv2.COLOR_GRAY2BGRA)
-        cv2.imshow("Warped and Output", numpy.hstack((warped_3channel, output)))
+        # cv2.imshow("Warped and Output", numpy.hstack((warped_3channel, output)))
 
-    
-cv2.waitKey(0)
+    return edged, warped_3channel, output
 
-cv2.destroyAllWindows()
- 
-picam2.stop_preview()
-picam2.stop()
