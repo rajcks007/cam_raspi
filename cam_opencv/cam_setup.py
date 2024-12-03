@@ -21,3 +21,14 @@ picam2.set_controls({
     "Brightness": -0.1,     # Brightness range: -1.0 to 1.0
     "Saturation": 1.0       # Adjust saturation
 })
+
+def cropped(cropped_image):
+
+    # Define the cropping parameters (e.g., crop 50 pixels from each side)
+    left_crop = 0    # Number of pixels to crop from the left
+    right_crop = 230   # Number of pixels to crop from the right
+
+    # Crop the image from the sides
+    image = cropped_image[:, left_crop:-right_crop] if right_crop > 0 else cropped_image[:, left_crop:]
+
+    return image

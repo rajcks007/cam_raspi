@@ -8,10 +8,10 @@ def colour_fn(image):
     # # Convert BGR to GRAY
     gray = cv2.cvtColor(image, cv2.COLOR_BGRA2GRAY)
 
-    # Threshold the GRAY image to get only colors
-    mask = cv2.inRange(gray, 100, 205)
+    # # Threshold the GRAY image to get only colors
+    # mask = cv2.inRange(gray, 100, 205)
 
     # Bitwise-AND mask and original image
     # res = cv2.bitwise_and(image,image, mask= mask)
 
-    return gray, mask
+    return gray
