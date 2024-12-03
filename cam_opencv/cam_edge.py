@@ -9,8 +9,8 @@ def edage_fn(image):
     cv2.waitKey(10)
 
     # Preprocess the image and and computing an edge map
-    blurred = cv2.GaussianBlur(gray, (7, 7), cv2.BORDER_DEFAULT)
-    edged = cv2.Canny(blurred, 50, 250, apertureSize = 5,  
+    blurred = cv2.GaussianBlur(gray, (5, 5), cv2.BORDER_DEFAULT)
+    edged = cv2.Canny(blurred, 150, 350, apertureSize = 5,  
                                         L2gradient = True)
     # edged = cv2.Canny(blurred, 50, 250, 255)
 
@@ -44,7 +44,5 @@ def edage_fn(image):
         # Convert warped image (2D grayscale) to 3 channels
         # warped_3channel = cv2.cvtColor(warped, cv2.COLOR_GRAY2BGRA)
         # cv2.imshow("Warped and Output", numpy.hstack((warped_3channel, output)))
-
-    cv2.waitKey(10)
 
     return edged, output, warped
