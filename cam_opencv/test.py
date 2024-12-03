@@ -40,13 +40,12 @@ while(1):
 
     # Convert BGR to GRAY
     gray = cv2.cvtColor(image, cv2.COLOR_BGRA2GRAY)
+    blurred = cv2.GaussianBlur(gray, (5, 5), cv2.BORDER_DEFAULT)
 
     # threshold the warped image, then apply a series of morphological operations to cleanup the thresholded image
-    thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
-    adaptive_thresh = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, 
-                                       cv2.THRESH_BINARY_INV, 11, 1)
+    thresh = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
 
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 5))
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (1, 5))
     tr_opene = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
 
     cv2.imshow('thresh_img', tr_opene)
@@ -62,11 +61,13 @@ while(1):
         (x, y, w, h) = cv2.boundingRect(c)
 
         # Draw the bounding box around each digit
-        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)  # Green rectangle with thickness 2
+        # cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)  # Green rectangle with thickness 2
 
         # if the contour is sufficiently large, it must be a digit
-        if w >= 15 and (h >= 30 and h <= 40):
+        if w >= 50 and (h >= 100 and h <= 230):
             digitCnts.append(c)
+            # Draw the bounding box around each digit
+            cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2) 
 
     # Show the image with the bounding boxes drawn
     cv2.imshow("Detected Digits", image)
