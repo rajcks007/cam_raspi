@@ -22,7 +22,7 @@ def digit_fn(gray, image):
     # Threshold the warped image, then apply a series of morphological operations to clean up the thresholded image
     thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
 
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 9))
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 7))
     tr_opene = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel, iterations=2)
 
     # Find contours in the thresholded image, then initialize the digit contours lists
@@ -37,7 +37,7 @@ def digit_fn(gray, image):
         (x, y, w, h) = cv2.boundingRect(c)
 
         # If the contour is sufficiently large, it must be a digit
-        if (w >= 30 and w <= 150) and (h >= 100 and h <= 230):
+        if (w >= 20 and w <= 150) and (h >= 100 and h <= 230):
             digitCnts.append(c)
             # Draw the bounding box around each digit in green
             cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2) 

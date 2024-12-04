@@ -50,8 +50,8 @@ while(1):
     # threshold the warped image, then apply a series of morphological operations to cleanup the thresholded image
     thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
 
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 9))
-    tr_opene = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel, iterations=2)
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 7))
+    tr_opene = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel, iterations=3)
 
     cv2.imshow('thresh_img', tr_opene)
 
@@ -66,7 +66,7 @@ while(1):
         # compute the bounding box of the contour
         (x, y, w, h) = cv2.boundingRect(c)
         # if the contour is sufficiently large, it must be a digit
-        if (w >= 30 and w <= 150) and (h >= 100 and h <= 230):
+        if (w >= 20 and w <= 150) and (h >= 100 and h <= 230):
             digitCnts.append(c)
             # Draw the bounding box around each digit
             cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2) 
@@ -79,6 +79,32 @@ while(1):
             cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)  # Blue for symbols
 
     # Show the image with the bounding boxes drawn
+    cv2.imshow("Detected Digits", image)
+
+    # loop over each of the digits
+    for c in digitCnts:
+        # extract the digit ROI
+        (x, y, w, h) = cv2.boundingRect(c)
+        roi = thresh[y:y + h, x:x + w]
+
+        # compute the width and height of each of the 7 segments
+        # we are going to examine
+        (roiH, roiW) = roi.shape
+        (dW, dH) = (int(roiW * 0.25), int(roiH * 0.15))
+        dHC = int(roiH * 0.05)
+
+        # define the set of 7 segments
+        segments = [
+            ((0, 0), (w, dH)),    # top
+            ((0, 0), (dW, h // 2)),    # top-left
+            ((w - dW, 0), (w, h // 2)),    # top-right
+            ((0, (h // 2) - dHC), (w, (h // 2) + dHC)), # center
+            ((0, h // 2), (dW, h)),    # bottom-left
+            ((w - dW, h // 2), (w, h)),    # bottom-right
+            ((0, h - dH), (w, h))    # bottom
+        ]
+        on = [0] * len(segments)
+
     cv2.imshow("Detected Digits", image)
 
     

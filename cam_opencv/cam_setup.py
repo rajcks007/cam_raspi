@@ -6,29 +6,23 @@ picam2 = Picamera2()
 # start camera
 picam2.start(show_preview=False)
 
-# Define the desired video resolution (width, height)
-video_resolution = (640, 480)  # 640x480 resolution
-
-# Configure the camera with the desired resolution
-config = picam2.create_video_configuration(main={"size": video_resolution})
-
 # set focus of camera
 picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 30.0})
 
 # Set controls
 picam2.set_controls({
-    "Contrast": 0.7,       # Contrast range: -1.0 to 1.0
-    "Brightness": -0.1,     # Brightness range: -1.0 to 1.0
-    "Saturation": 1.0       # Adjust saturation
+    "Contrast": 0.8,        # Contrast range: -1.0 to 1.0
+    "Brightness": -0.2,     # Brightness range: -1.0 to 1.0
+    "Saturation": -1.0       # Adjust saturation
 })
 
 def cropped(cropped_image):
 
     # Define the cropping parameters (e.g., crop 50 pixels from each side)
-    left_crop = 0    # Number of pixels to crop from the left
-    right_crop = 250   # Number of pixels to crop from the right
-    top_crop = 0    # Number of pixels to crop from the top
-    bottom_crop = 30  # Number of pixels to crop from the bottom
+    left_crop = 0                  # Number of pixels to crop from the left
+    right_crop = 250               # Number of pixels to crop from the right
+    top_crop = 0                   # Number of pixels to crop from the top
+    bottom_crop = 30               # Number of pixels to crop from the bottom
 
     # Crop the image from all sides (left, right, top, and bottom)
     image = cropped_image[top_crop:-bottom_crop, left_crop:-right_crop] if right_crop > 0 and bottom_crop > 0 else \

@@ -13,9 +13,11 @@ while(1):
     # Crop the image from the sides
     image = cropped(cropped_image)                                                                                 
 
-    gray = colour_fn(image)                 # call function
+    gray = colour_fn(image)                 # gray image
 
-    image, tr_opene = digit_fn(gray, image)
+    image, tr_opene = digit_fn(gray, image) # extract image
+
+    
 
     cv2.imshow('thresh_img', tr_opene)
 
