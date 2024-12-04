@@ -15,4 +15,5 @@ def colour_fn(image):
     # Bitwise-AND mask and original image
     # res = cv2.bitwise_and(image,image, mask= mask)
 
+    # Return the gray image
     return gray

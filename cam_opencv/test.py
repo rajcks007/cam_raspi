@@ -66,44 +66,49 @@ while(1):
         # compute the bounding box of the contour
         (x, y, w, h) = cv2.boundingRect(c)
         # if the contour is sufficiently large, it must be a digit
-        if (w >= 20 and w <= 150) and (h >= 100 and h <= 230):
+        if (w >= 30 and w <= 150) and (h >= 200 and h <= 240):
             digitCnts.append(c)
             # Draw the bounding box around each digit
             cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2) 
         
         # If the contour is within the symbol size range
         # (symbols might be smaller or larger than digits, depending on your use case)
-        elif (w >= 15 and w <= 100) and (h >= 50 and h <= 70):
+        elif (w >= 25 and w <= 100) and (h >= 25 and h <= 80):
             symbolCnts.append(c)
             # Draw the bounding box around each symbol in blue
-            cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)  # Blue for symbols
+            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 3)  # Blue for symbols
 
     # Show the image with the bounding boxes drawn
     cv2.imshow("Detected Digits", image)
 
-    # loop over each of the digits
-    for c in digitCnts:
-        # extract the digit ROI
-        (x, y, w, h) = cv2.boundingRect(c)
-        roi = thresh[y:y + h, x:x + w]
+    # # sort the contours from left-to-right, then initialize the
+    # # actual digits themselves
+    # digitCnts = contours.sort_contours(digitCnts, method="left-to-right")[0]
+    # digits = []
 
-        # compute the width and height of each of the 7 segments
-        # we are going to examine
-        (roiH, roiW) = roi.shape
-        (dW, dH) = (int(roiW * 0.25), int(roiH * 0.15))
-        dHC = int(roiH * 0.05)
+    # # loop over each of the digits
+    # for c in digitCnts:
+    #     # extract the digit ROI
+    #     (x, y, w, h) = cv2.boundingRect(c)
+    #     roi = thresh[y:y + h, x:x + w]
 
-        # define the set of 7 segments
-        segments = [
-            ((0, 0), (w, dH)),    # top
-            ((0, 0), (dW, h // 2)),    # top-left
-            ((w - dW, 0), (w, h // 2)),    # top-right
-            ((0, (h // 2) - dHC), (w, (h // 2) + dHC)), # center
-            ((0, h // 2), (dW, h)),    # bottom-left
-            ((w - dW, h // 2), (w, h)),    # bottom-right
-            ((0, h - dH), (w, h))    # bottom
-        ]
-        on = [0] * len(segments)
+    #     # compute the width and height of each of the 7 segments
+    #     # we are going to examine
+    #     (roiH, roiW) = roi.shape
+    #     (dW, dH) = (int(roiW * 0.25), int(roiH * 0.15))
+    #     dHC = int(roiH * 0.05)
+
+    #     # define the set of 7 segments
+    #     segments = [
+    #         ((0, 0), (w, dH)),    # top
+    #         ((0, 0), (dW, h // 2)),    # top-left
+    #         ((w - dW, 0), (w, h // 2)),    # top-right
+    #         ((0, (h // 2) - dHC), (w, (h // 2) + dHC)), # center
+    #         ((0, h // 2), (dW, h)),    # bottom-left
+    #         ((w - dW, h // 2), (w, h)),    # bottom-right
+    #         ((0, h - dH), (w, h))    # bottom
+    #     ]
+    #     on = [0] * len(segments)
 
     cv2.imshow("Detected Digits", image)
 

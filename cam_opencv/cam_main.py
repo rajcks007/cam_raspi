@@ -15,10 +15,10 @@ while(1):
 
     gray = colour_fn(image)                 # gray image
 
-    image, tr_opene = digit_fn(gray, image) # extract image
+    image, tr_opene = digit_fn(gray, image) # extract digit from image
 
     
-
+    # Show the threshold image
     cv2.imshow('thresh_img', tr_opene)
 
     # Show the image with the bounding boxes drawn

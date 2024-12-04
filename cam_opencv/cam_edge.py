@@ -4,9 +4,7 @@ from cam_colour import *
 
 def edage_fn(image):
     
-    gray, mask = colour_fn(image)           # call function
-
-    cv2.waitKey(10)
+    gray, mask = colour_fn(image)           # call to gray image function
 
     # Preprocess the image and and computing an edge map
     blurred = cv2.GaussianBlur(gray, (5, 5), cv2.BORDER_DEFAULT)
@@ -25,7 +23,7 @@ def edage_fn(image):
         peri = cv2.arcLength(c, True)
         approx = cv2.approxPolyDP(c, 0.02 * peri, True)
     
-        # if the contour has four vertices, then we have found the thermostat display
+        # if the contour has four vertices, then we have found the display
         if len(approx) == 4:
             displayCnt = approx
             break
@@ -37,4 +35,5 @@ def edage_fn(image):
         warped = four_point_transform(gray, displayCnt.reshape(4, 2))
         output = four_point_transform(image, displayCnt.reshape(4, 2))
 
+    # Return the edged,output and warped image
     return edged, output, warped

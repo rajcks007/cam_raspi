@@ -2,8 +2,7 @@ from lib import *
 from cam_setup import *
 from cam_colour import *
 
-# define the dictionary of digit segments so we can identify
-# each digit on the thermostat
+# define the dictionary of digit segments so we can identify each digit on the Display
 DIGITS_LOOKUP = {
 	(1, 1, 1, 0, 1, 1, 1): 0,
 	(0, 0, 1, 0, 0, 1, 0): 1,
@@ -40,7 +39,7 @@ def digit_fn(gray, image):
         if (w >= 20 and w <= 150) and (h >= 100 and h <= 230):
             digitCnts.append(c)
             # Draw the bounding box around each digit in green
-            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2) 
+            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2) # Green for digit
         
         # If the contour is within the symbol size range (symbols might be smaller or larger than digits)
         elif (w >= 15 and w <= 100) and (h >= 50 and h <= 70):
