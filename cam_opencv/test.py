@@ -66,7 +66,7 @@ while(1):
         # compute the bounding box of the contour
         (x, y, w, h) = cv2.boundingRect(c)
         # if the contour is sufficiently large, it must be a digit
-        if (w >= 30 and w <= 150) and (h >= 200 and h <= 240):
+        if (w >= 20 and w <= 160) and (h >= 190 and h <= 250):
             digitCnts.append(c)
             # Draw the bounding box around each digit
             cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2) 
@@ -82,7 +82,7 @@ while(1):
     cv2.imshow("Detected Digits", image)
 
     # Loop over each of the digits and check the segments
-    for c in digitCnts:
+    for idx,c in enumerate(digitCnts):  # 'idx' will give us the digit index
         # Extract the digit ROI
         (x, y, w, h) = cv2.boundingRect(c)
         roi = tr_opene[y:y + h, x:x + w]
@@ -122,12 +122,16 @@ while(1):
                 on[i] = 1  # Segment is "on"
 
         # Print the status of the segments for each digit
-        print(f"Segment states for digit at ({x}, {y}): {on}")
+        print(f"Digit_{idx + 1} at ({x}, {y}): {on}")
 
-    cv2.imshow("Detected Digits", image)
-
+    # Wait for a key press
+    key = cv2.waitKey(1)
     
-cv2.waitKey(0)
+    # If the 'Esc' key is pressed, close the window
+    if key == 27:  # ASCII value of 'Esc' is 27
+        break
+
+
 
 cv2.destroyAllWindows()
  

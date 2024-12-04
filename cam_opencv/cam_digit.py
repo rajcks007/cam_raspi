@@ -46,6 +46,49 @@ def digit_fn(gray, image):
             symbolCnts.append(c)
             # Draw the bounding box around each symbol in blue
             cv2.rectangle(image, (x, y), (x + w, y + h), (255, 0, 0), 2)  # Blue for symbols
+    
+    # Loop over each of the digits and check the segments
+    for idx,c in enumerate(digitCnts):  # 'idx' will give us the digit index
+        # Extract the digit ROI
+        (x, y, w, h) = cv2.boundingRect(c)
+        roi = tr_opene[y:y + h, x:x + w]
+
+        # Compute the width and height of each of the 7 segments
+        (roiH, roiW) = roi.shape
+        (dW, dH) = (int(roiW * 0.25), int(roiH * 0.15))
+        dHC = int(roiH * 0.05)
+
+        # Define the set of 7 segments in terms of their positions relative to the digit's bounding box
+        segments = [
+            ((0, 0), (w, dH)),    # top
+            ((0, 0), (dW, h // 2)),    # top-left
+            ((w - dW, 0), (w, h // 2)),    # top-right
+            ((0, (h // 2) - dHC), (w, (h // 2) + dHC)),  # center
+            ((0, h // 2), (dW, h)),    # bottom-left
+            ((w - dW, h // 2), (w, h)),    # bottom-right
+            ((0, h - dH), (w, h))    # bottom
+        ]
+
+        # List to track which segments are "on"
+        on = [0] * len(segments)
+
+        # Check each segment to see if it's "on" (i.e., if there are white pixels in that segment)
+        for i, (start, end) in enumerate(segments):
+            (x1, y1) = start
+            (x2, y2) = end
+
+            # Crop the segment from the digit's ROI
+            segment = roi[y1:y2, x1:x2]
+
+            # Count the number of white pixels (255) in the segment
+            white_pixels = numpy.sum(segment == 255)
+
+            # If the number of white pixels is above a certain threshold, we consider this segment "on"
+            if white_pixels > 0.5 * segment.size:  # Adjust threshold as needed
+                on[i] = 1  # Segment is "on"
+
+        # Print the status of the segments for each digit
+        print(f"Digit_{idx + 1} at ({x}, {y}): {on}")   
 
     # Return the processed image and the thresholded image
     return image, tr_opene
