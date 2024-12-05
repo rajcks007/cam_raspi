@@ -14,6 +14,12 @@ def colour_fn(image):
 
     # Bitwise-AND mask and original image
     # res = cv2.bitwise_and(image,image, mask= mask)
+        
+    # Threshold the warped image, then apply a series of morphological operations to clean up the thresholded image
+    thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 7))
+    tr_opene = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel, iterations=2)
 
     # Return the gray image
-    return gray
+    return gray, tr_opene

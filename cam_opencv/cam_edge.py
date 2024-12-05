@@ -2,9 +2,7 @@ from lib import *
 from cam_setup import *
 from cam_colour import *
 
-def edage_fn(image):
-    
-    gray, mask = colour_fn(image)           # call to gray image function
+def edage_fn(image, gray):
 
     # Preprocess the image and and computing an edge map
     blurred = cv2.GaussianBlur(gray, (5, 5), cv2.BORDER_DEFAULT)

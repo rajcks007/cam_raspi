@@ -122,6 +122,21 @@ while(1):
 
         # Print the status of the segments for each digit
         print(f"Digit_{idx + 1} at ({x}, {y}): {on}")
+
+        # Loop over each of the symbols
+    for idx, c in enumerate(symbolCnts):  # 'idx' will give us the symbol index
+        # Extract the symbol ROI
+        (x, y, w, h) = cv2.boundingRect(c)
+        roi = tr_opene[y:y + h, x:x + w]
+
+        # Count the number of white pixels (255) in the ROI
+        white_pixels = numpy.sum(roi == 255)
+
+        # If the number of white pixels exceeds a threshold, consider it a valid symbol
+        if white_pixels > 0.1 * roi.size:  # Adjust threshold as needed
+            print(f"Symbol_{idx + 1} at ({x}, {y}) is a valid symbol")
+        else:
+            print(f"Symbol_{idx + 1} at ({x}, {y}) is not valid (too few white pixels)")
     
     # # If the 'Esc' key is pressed, close the window
     # if keyboard.is_pressed('esc'):  # ASCII value of 'Esc' is 27
