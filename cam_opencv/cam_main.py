@@ -24,12 +24,9 @@ while(1):
     # Show the image with the bounding boxes drawn
     cv2.imshow("Detected Digits", image)
 
-    # Wait for a key press
-    key = cv2.waitKey(1)
-    
-    # If the 'Esc' key is pressed, close the window
-    if key == 27:  # ASCII value of 'Esc' is 27
-        break
+    # # If the 'Esc' key is pressed, close the window
+    # if keyboard.is_pressed('esc'):  # ASCII value of 'Esc' is 27
+    #     break
 
     
 cv2.waitKey(0)
