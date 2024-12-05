@@ -1,1 +1,3 @@
 https://pyimagesearch.com/2017/02/13/recognizing-digits-with-opencv-and-python/
+
+grim -g "$(slurp)" Rectengle1.png       Taking Photos

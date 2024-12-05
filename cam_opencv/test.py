@@ -127,8 +127,6 @@ while(1):
     # if keyboard.is_pressed('esc'):  # ASCII value of 'Esc' is 27
     #     break
 
-
-cv2.destroyAllWindows()
- 
 picam2.stop_preview()
 picam2.stop()
+cv2.destroyAllWindows()
