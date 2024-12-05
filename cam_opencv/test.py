@@ -4,9 +4,8 @@ from picamera2 import Picamera2
 from libcamera import controls
 import numpy
 import imutils
-from imutils.perspective import four_point_transform
-from imutils import contours
 import time
+import keyboard
 
 picam2 = Picamera2()
 
@@ -123,14 +122,10 @@ while(1):
 
         # Print the status of the segments for each digit
         print(f"Digit_{idx + 1} at ({x}, {y}): {on}")
-
-    # Wait for a key press
-    key = cv2.waitKey(1)
     
-    # If the 'Esc' key is pressed, close the window
-    if key == 27:  # ASCII value of 'Esc' is 27
-        break
-
+    # # If the 'Esc' key is pressed, close the window
+    # if keyboard.is_pressed('esc'):  # ASCII value of 'Esc' is 27
+    #     break
 
 
 cv2.destroyAllWindows()
