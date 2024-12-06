@@ -187,6 +187,7 @@ while(1):
     #     break
 
 from digit_data import *
+from symbol_data import *
 
 print("for data_set 1")
 
@@ -222,7 +223,12 @@ for bit_position in range(7):  # We have 7 bits, so positions 0 to 6
     else:
         print(f"Bit position {bit_position} has only '0' values.")
 
-        
+for idx in symbol_data.keys():  # We loop through the keys (symbol names)
+    symbol = globals().get(idx)  # Access the variable by its name dynamically
+    if 1 in symbol:
+            print(f"{idx} contains at least one '1'.")
+
+
 
 picam2.stop_preview()
 picam2.stop()
