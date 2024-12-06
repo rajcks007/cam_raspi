@@ -1,4 +1,5 @@
 from lib import *
+from cam_setup import *
 
 # define the dictionary of digit segments so we can identify each digit on the Display
 DIGITS_LOOKUP = {
@@ -58,3 +59,21 @@ def digit_fn(tr_opene, digitCnts):
 
         # Print the status of the segments for each digit
         print(f"Digit_{idx + 1} at ({x}, {y}): {on}")
+
+        # Dynamically store the data for each digit (using idx as the key)
+        digit_data[f"data_{idx + 1}"] = digit_data.get(f"data_{idx + 1}", []) + [on]
+
+        # you can save data after each loop or at set intervals to prevent data loss
+        with open('digit_data.py', 'w') as file:
+            for idx, on_data in digit_data.items():
+                # Manually format the data to match the desired output
+                file.write(f"{idx} = [\n")
+
+                # Loop through all but the last element
+                for i, on in enumerate(on_data):
+                    if i < len(on_data) - 1:
+                        file.write(f"    {on},\n")  # Add a comma after each entry except the last
+                    else:
+                        file.write(f"    {on}\n")  # No comma after the last element
+
+                file.write("]\n\n")

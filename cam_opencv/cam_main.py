@@ -4,9 +4,16 @@ from cam_colour import *
 from cam_rectengle import *
 from cam_digit import *
 from cam_symbol import *
+from data_validate import *
+
+start_time = time.time()  # Record the start time
 
 while(1):
-     
+    
+    elapsed_time = time.time() - start_time  # Calculate the elapsed time
+    if elapsed_time > 10:  # If 5 seconds have passed
+        break  # Exit the loop
+
     cv2.waitKey(50)
 
     # capture the array in BGR
@@ -36,6 +43,12 @@ while(1):
     # if keyboard.is_pressed('esc'):  # ASCII value of 'Esc' is 27
     #     break
 
+from digit_data import *
+
+print("for data_set 1")
+data_valid(data_1)
+print("for data_set 2")
+data_valid(data_2)
 cv2.destroyAllWindows()
  
 picam2.stop_preview()

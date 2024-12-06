@@ -1,12 +1,4 @@
-# Sample data: 100 7-bit data points
-data = [
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 1, 0, 1, 1, 0, 0],
-    [0, 1, 1, 1, 1, 1, 1],
-    [0, 0, 1, 1, 1, 1, 1]
-]
-
-def data_valid() :
+def data_valid(data) :
     # Loop through each bit position (from 0 to 6)
     for bit_position in range(7):  # We have 7 bits, so positions 0 to 6
         found_one = False

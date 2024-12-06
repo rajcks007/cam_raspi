@@ -131,7 +131,7 @@ while(1):
                 on[i] = 1  # Segment is "on"
 
         # Print the status of the segments for each digit
-        print(f"Digit_{idx + 1} at ({x}, {y}): {on}")
+        # print(f"Digit_{idx + 1} at ({x}, {y}): {on}")
 
         # Dynamically store the data for each digit (using idx as the key)
         digit_data[f"data_{idx + 1}"] = digit_data.get(f"data_{idx + 1}", []) + [on]
@@ -162,14 +162,14 @@ while(1):
 
         # If the number of white pixels exceeds a threshold, consider it a valid symbol
         if white_pixels > 0.1 * roi.size:  # Adjust threshold as needed
-            print(f"Symbol_{idx + 1} at ({x}, {y}) is a valid symbol")
-        # Store 1 for valid symbol, append to the list if it exists
+            # print(f"Symbol_{idx + 1} at ({x}, {y}) is a valid symbol")
+            # Store 1 for valid symbol, append to the list if it exists
             if f"symbol_{idx + 1}" in symbol_data:
                 symbol_data[f"symbol_{idx + 1}"].append(1)
             else:
                 symbol_data[f"symbol_{idx + 1}"] = [1]  # Initialize with 1 if not exists
         else:
-            print(f"Symbol_{idx + 1} at ({x}, {y}) is not valid (too few white pixels)")
+            # print(f"Symbol_{idx + 1} at ({x}, {y}) is not valid (too few white pixels)")
             # Store 0 for invalid symbol, append to the list if it exists
             if f"symbol_{idx + 1}" in symbol_data:
                 symbol_data[f"symbol_{idx + 1}"].append(0)
@@ -185,6 +185,23 @@ while(1):
     # # If the 'Esc' key is pressed, close the window
     # if keyboard.is_pressed('esc'):  # ASCII value of 'Esc' is 27
     #     break
+
+from digit_data import *
+
+# Loop through each bit position (from 0 to 6)
+for bit_position in range(7):  # We have 7 bits, so positions 0 to 6
+    found_one = False
+    # Check each data point to see if the bit at the current position is '1'
+    for data_point in data_1:
+        if data_point[bit_position] == 1:
+            found_one = True
+            break  # No need to check further if we find at least one '1'
+        
+    # Print the result for the current bit position
+    if found_one:
+        print(f"Bit position {bit_position} has at least one '1'.")
+    else:
+        print(f"Bit position {bit_position} has only '0' values.")
 
 picam2.stop_preview()
 picam2.stop()

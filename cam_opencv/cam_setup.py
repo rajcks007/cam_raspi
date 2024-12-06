@@ -32,3 +32,8 @@ def cropped(cropped_image):
     
     # Return the image with rectangles on it
     return image
+
+# Dictionary to store data dynamically for each detected digit (based on idx)
+digit_data = {}
+# Define a dictionary to store the symbol data
+symbol_data = {}
