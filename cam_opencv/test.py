@@ -22,8 +22,18 @@ picam2.set_controls({
 # set focus of camera
 picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 35.0})
 
+start_time = time.time()  # Record the start time
+
+# Dictionary to store data dynamically for each detected digit (based on idx)
+digit_data = {}
+# Define a dictionary to store the symbol data
+symbol_data = {}
+
 while(1):
 
+    elapsed_time = time.time() - start_time  # Calculate the elapsed time
+    if elapsed_time > 10:  # If 5 seconds have passed
+        break  # Exit the loop
 
     cv2.waitKey(50)
 
@@ -123,7 +133,25 @@ while(1):
         # Print the status of the segments for each digit
         print(f"Digit_{idx + 1} at ({x}, {y}): {on}")
 
-        # Loop over each of the symbols
+        # Dynamically store the data for each digit (using idx as the key)
+        digit_data[f"data_{idx + 1}"] = digit_data.get(f"data_{idx + 1}", []) + [on]
+
+        # you can save data after each loop or at set intervals to prevent data loss
+        with open('digit_data.py', 'w') as file:
+            for idx, on_data in digit_data.items():
+                # Manually format the data to match the desired output
+                file.write(f"{idx} = [\n")
+
+                # Loop through all but the last element
+                for i, on in enumerate(on_data):
+                    if i < len(on_data) - 1:
+                        file.write(f"    {on},\n")  # Add a comma after each entry except the last
+                    else:
+                        file.write(f"    {on}\n")  # No comma after the last element
+
+                file.write("]\n\n")
+
+    # Loop over each of the symbols
     for idx, c in enumerate(symbolCnts):  # 'idx' will give us the symbol index
         # Extract the symbol ROI
         (x, y, w, h) = cv2.boundingRect(c)
@@ -135,8 +163,24 @@ while(1):
         # If the number of white pixels exceeds a threshold, consider it a valid symbol
         if white_pixels > 0.1 * roi.size:  # Adjust threshold as needed
             print(f"Symbol_{idx + 1} at ({x}, {y}) is a valid symbol")
+        # Store 1 for valid symbol, append to the list if it exists
+            if f"symbol_{idx + 1}" in symbol_data:
+                symbol_data[f"symbol_{idx + 1}"].append(1)
+            else:
+                symbol_data[f"symbol_{idx + 1}"] = [1]  # Initialize with 1 if not exists
         else:
             print(f"Symbol_{idx + 1} at ({x}, {y}) is not valid (too few white pixels)")
+            # Store 0 for invalid symbol, append to the list if it exists
+            if f"symbol_{idx + 1}" in symbol_data:
+                symbol_data[f"symbol_{idx + 1}"].append(0)
+            else:
+                symbol_data[f"symbol_{idx + 1}"] = [0]  # Initialize with 0 if not exists
+        
+        # Save the symbol data to a file
+        with open('symbol_data.py', 'w') as file:
+            for idx, validity in symbol_data.items():
+                # Write the variable assignment and the list using repr()
+                file.write(f"{idx} = {validity}\n\n")
     
     # # If the 'Esc' key is pressed, close the window
     # if keyboard.is_pressed('esc'):  # ASCII value of 'Esc' is 27
