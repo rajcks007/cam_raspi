@@ -32,10 +32,10 @@ symbol_data = {}
 while(1):
 
     elapsed_time = time.time() - start_time  # Calculate the elapsed time
-    if elapsed_time > 1000:  # If n seconds have passed
+    if elapsed_time > 10:  # If n seconds have passed
         break  # Exit the loop
 
-    #cv2.waitKey(50)
+    cv2.waitKey(50)
 
     # capture the array in BGR
     cropped_image = picam2.capture_array()
@@ -186,8 +186,8 @@ while(1):
     # if keyboard.is_pressed('esc'):  # ASCII value of 'Esc' is 27
     #     break
 
-from digit_data import *
-from symbol_data import *
+from cam_opencv.digit_data import *
+from cam_opencv.symbol_data import *
 
 print("for data_set 1")
 

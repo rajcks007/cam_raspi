@@ -64,7 +64,7 @@ def digit_fn(tr_opene, digitCnts):
         digit_data[f"data_{idx + 1}"] = digit_data.get(f"data_{idx + 1}", []) + [on]
 
         # you can save data after each loop or at set intervals to prevent data loss
-        with open('digit_data.py', 'w') as file:
+        with open('/home/raj/Desktop/cam/cam_opencv/digit_data.py', 'w') as file:
             for idx, on_data in digit_data.items():
                 # Manually format the data to match the desired output
                 file.write(f"{idx} = [\n")

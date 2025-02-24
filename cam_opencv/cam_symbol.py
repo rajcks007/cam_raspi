@@ -29,7 +29,7 @@ def symbol_fn(tr_opene, symbolCnts):
                 symbol_data[f"symbol_{idx + 1}"] = [0]  # Initialize with 0 if not exists
         
         # Save the symbol data to a file
-        with open('symbol_data.py', 'w') as file:
+        with open('/home/raj/Desktop/cam/cam_opencv/symbol_data.py', 'w') as file:
             for idx, validity in symbol_data.items():
                 # Write the variable assignment and the list using repr()
                 file.write(f"{idx} = {validity}\n\n")

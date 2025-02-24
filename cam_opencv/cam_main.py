@@ -44,14 +44,15 @@ while(1):
     # if keyboard.is_pressed('esc'):  # ASCII value of 'Esc' is 27
     #     break
 
+# Release the camera and close the window
+picam2.stop_preview()
+picam2.stop()
+cv2.destroyAllWindows()
 
 from digit_data import *
+from symbol_data import *
 
 print("for data_set 1")
 data_valid(data_1)
 print("for data_set 2")
 data_valid(data_2)
-cv2.destroyAllWindows()
-
-picam2.stop_preview()
-picam2.stop()
