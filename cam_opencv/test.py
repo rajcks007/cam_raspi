@@ -6,6 +6,10 @@ import numpy
 import imutils
 import time
 import keyboard
+from gpiozero import Button
+from signal import pause
+
+button = Button(17)
 
 picam2 = Picamera2()
 
@@ -29,7 +33,7 @@ digit_data = {}
 # Define a dictionary to store the symbol data
 symbol_data = {}
 
-while(1):
+while(button.when_pressed):
 
     elapsed_time = time.time() - start_time  # Calculate the elapsed time
     if elapsed_time > 10:  # If n seconds have passed

@@ -6,10 +6,10 @@ from cam_digit import *
 from cam_symbol import *
 from data_validate import *
 
-
+button = Button(17)
 start_time = time.time()  # Record the start time
 
-while(1):
+while(button.when_pressed):
     
     elapsed_time = time.time() - start_time  # Calculate the elapsed time
     if elapsed_time > 10:  # If 10 seconds have passed
