@@ -137,7 +137,7 @@ while(1):
         digit_data[f"data_{idx + 1}"] = digit_data.get(f"data_{idx + 1}", []) + [on]
 
         # you can save data after each loop or at set intervals to prevent data loss
-        with open('digit_data.py', 'w') as file:
+        with open('/home/raj/Desktop/cam/cam_opencv/digit_data.py', 'w') as file:
             for idx, on_data in digit_data.items():
                 # Manually format the data to match the desired output
                 file.write(f"{idx} = [\n")
@@ -177,7 +177,7 @@ while(1):
                 symbol_data[f"symbol_{idx + 1}"] = [0]  # Initialize with 0 if not exists
         
         # Save the symbol data to a file
-        with open('symbol_data.py', 'w') as file:
+        with open('/home/raj/Desktop/cam/cam_opencv/symbol_data.py', 'w') as file:
             for idx, validity in symbol_data.items():
                 # Write the variable assignment and the list using repr()
                 file.write(f"{idx} = {validity}\n\n")
@@ -186,8 +186,8 @@ while(1):
     # if keyboard.is_pressed('esc'):  # ASCII value of 'Esc' is 27
     #     break
 
-from cam_opencv.digit_data import *
-from cam_opencv.symbol_data import *
+from digit_data import *
+from symbol_data import *
 
 print("for data_set 1")
 
