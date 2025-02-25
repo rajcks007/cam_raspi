@@ -1,20 +1,23 @@
 from lib import *
 from libcamera import controls
 
-picam2 = Picamera2()
 
-# start camera
-picam2.start(show_preview=False)
+def cam_init(picam2):
 
-# set focus of camera
-picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 30.0})
+    # start camera
+    picam2.start(show_preview=False)
 
-# Set controls
-picam2.set_controls({
-    "Contrast"  : 0.8,      # Contrast range: -1.0 to 1.0
-    "Brightness": -0.2,     # Brightness range: -1.0 to 1.0
-    "Saturation": -1.0      # Adjust saturation
-})
+    # set focus of camera
+    picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 30.0})
+
+    # Set controls
+    picam2.set_controls({
+        "Contrast"  : 0.8,      # Contrast range: -1.0 to 1.0
+        "Brightness": -0.2,     # Brightness range: -1.0 to 1.0
+        "Saturation": -1.0      # Adjust saturation
+    })
+
+    return picam2
 
 def cropped(cropped_image):
 
@@ -37,3 +40,7 @@ def cropped(cropped_image):
 digit_data = {}
 # Define a dictionary to store the symbol data
 symbol_data = {}
+
+def cam_deinit(picam2):
+    picam2.stop_preview()
+    picam2.stop()
