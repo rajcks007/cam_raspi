@@ -15,6 +15,10 @@ button = Button(17, pull_up=False, bounce_time=0.2)
 
 error, ok = spi_init()
 
+# Check if running in a headless environment
+if not os.environ.get("DISPLAY"):
+    cv2.imshow = lambda *args, **kwargs: None  # Disable imshow
+
 # Callback function when the button is pressed
 def on_button_pressed():
     start_time = time.time()  # Record the start time

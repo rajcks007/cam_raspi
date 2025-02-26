@@ -1,3 +1,4 @@
+import os
 import cv2
 from picamera2 import *
 from picamera2 import Picamera2 
@@ -32,6 +33,9 @@ spi.mode = 0  # SPI Mode 0: (CPOL=0, CPHA=0) -> first edge sampling
 error = [0x24]  # Error code to send if there is an issue with the data ($)
 ok = [0x2A]  # OK code to send if the data is valid (*)
 
+# Check if running in a headless environment
+if not os.environ.get("DISPLAY"):
+    cv2.imshow = lambda *args, **kwargs: None  # Disable imshow
 
 # Callback function when the button is pressed
 def on_button_pressed():
