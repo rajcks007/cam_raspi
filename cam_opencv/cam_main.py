@@ -12,6 +12,10 @@ picam2 = Picamera2()
 
 # Configure the button on GPIO pin 17
 button = Button(17, pull_up=False, bounce_time=0.2)
+Led_1 = LED(27)
+Led_2 = LED(22)
+
+Led_1.on()
 
 error, ok = spi_init()
 
@@ -24,6 +28,8 @@ def on_button_pressed():
     start_time = time.time()  # Record the start time
 
     picam_2 = cam_init(picam2)
+
+    Led_2.on()
 
     while(1):
 
@@ -103,6 +109,8 @@ def on_button_pressed():
         file.write('')
     with open('/home/raj/Desktop/cam/cam_opencv/symbol_data.py', 'w') as file:
         file.write('')
+
+    Led_2.off()
 
     # Stop the camera
     cam_deinit(picam2)

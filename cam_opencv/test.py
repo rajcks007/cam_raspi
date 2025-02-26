@@ -7,7 +7,7 @@ import numpy
 import imutils
 import time
 import keyboard
-from gpiozero import Button
+from gpiozero import *
 from signal import pause
 import spidev
 
@@ -15,6 +15,8 @@ picam2 = Picamera2()
 
 # Configure the button on GPIO pin 17
 button = Button(17, pull_up=False, bounce_time=0.2)
+Led_1 = LED(27)
+Led_2 = LED(22)
 
 # We only have SPI bus 0 available to us on the Pi
 bus = 0
@@ -33,6 +35,8 @@ spi.mode = 0  # SPI Mode 0: (CPOL=0, CPHA=0) -> first edge sampling
 error = [0x24]  # Error code to send if there is an issue with the data ($)
 ok = [0x2A]  # OK code to send if the data is valid (*)
 
+Led_1.on()
+
 # Check if running in a headless environment
 if not os.environ.get("DISPLAY"):
     cv2.imshow = lambda *args, **kwargs: None  # Disable imshow
@@ -41,6 +45,8 @@ if not os.environ.get("DISPLAY"):
 def on_button_pressed():
     # start camera
     picam2.start(show_preview=False)
+
+    Led_2.on()
 
     # Set controls
     picam2.set_controls({
@@ -304,6 +310,7 @@ def on_button_pressed():
     with open('/home/raj/Desktop/cam/cam_opencv/symbol_data.py', 'w') as file:
         file.write('')
 
+    Led_2.off()
     
     # Stop the camera
     picam2.stop_preview()
