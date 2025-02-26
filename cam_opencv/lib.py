@@ -9,3 +9,4 @@ import time
 import keyboard
 from gpiozero import Button
 from signal import pause
+import spidev

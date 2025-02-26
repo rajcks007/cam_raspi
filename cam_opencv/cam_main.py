@@ -5,12 +5,15 @@ from cam_rectengle import *
 from cam_digit import *
 from cam_symbol import *
 from data_validate import *
+from spi import *
 
 global picam2
 picam2 = Picamera2()
 
 # Configure the button on GPIO pin 17
 button = Button(17, pull_up=False, bounce_time=0.2)
+
+error, ok = spi_init()
 
 # Callback function when the button is pressed
 def on_button_pressed():
@@ -57,23 +60,27 @@ def on_button_pressed():
         from digit_data import data_1, data_2
     except:
         print("Error importing digit_data from the files.")
+        send_message(error)
 
     try:
         from symbol_data import symbol_1, symbol_2 # Adjust these imports based on the actual variables you need
     except:
         print("Error importing symbol_data from the files.")
+        #send_message(error)
 
     try:
         print("for data_set 1")
         data_valid(data_1)
     except:
         print("Error validating data_set 1")
+        send_message(error)
 
     try:
         print("for data_set 2")
         data_valid(data_2)
     except: 
         print("Error validating data_set 2")
+        send_message(error)
 
     # Check the symbol data
     try:
@@ -82,8 +89,10 @@ def on_button_pressed():
             symbol = globals().get(idx)  # Access the variable by its name dynamically
             if 1 in symbol:
                 print(f"{idx} contains at least one '1'.")
+                send_message(ok)
     except:
-        print("Error processing symbol data.") 
+        print("Error processing symbol data.")
+        #send_message(error) 
     
     # Once processing is complete, clear the file contents
     with open('/home/raj/Desktop/cam/cam_opencv/digit_data.py', 'w') as file:

@@ -8,12 +8,29 @@ import time
 import keyboard
 from gpiozero import Button
 from signal import pause
+import spidev
 
 picam2 = Picamera2()
 
 # Configure the button on GPIO pin 17
 button = Button(17, pull_up=False, bounce_time=0.2)
 
+# We only have SPI bus 0 available to us on the Pi
+bus = 0
+
+#Device is the chip select pin. Set to 0 or 1, depending on the connections
+device = 1
+
+# Enable SPI
+spi = spidev.SpiDev()
+
+# Open a connection to a specific bus and device (chip select pin)
+spi.open(bus, device)
+spi.max_speed_hz = 18000000  # Set speed to 18 Mbit/s
+spi.mode = 0  # SPI Mode 0: (CPOL=0, CPHA=0) -> first edge sampling
+
+error = [0x24]  # Error code to send if there is an issue with the data ($)
+ok = [0x2A]  # OK code to send if the data is valid (*)
 
 
 # Callback function when the button is pressed
@@ -188,18 +205,17 @@ def on_button_pressed():
                     # Write the variable assignment and the list using repr()
                     file.write(f"{idx} = {validity}\n\n")
 
-        # # If the 'Esc' key is pressed, close the window
-        # if keyboard.is_pressed('esc'):  # ASCII value of 'Esc' is 27
-        #     break
     try:
         from digit_data import data_1, data_2
     except:
         print("Error importing digit_data from the files.")
+        spi.writebytes(error)  # Send error code if there is an issue with the data
 
     try:
         from symbol_data import symbol_1, symbol_2 # Adjust these imports based on the actual variables you need
     except:
         print("Error importing symbol_data from the files.")
+        #spi.writebytes(error)  # Send error code if there is an issue with the data
 
     try:
         print("for data_set 1")
@@ -226,10 +242,13 @@ def on_button_pressed():
             # For other positions, check the result and print accordingly
             if found_one:
                 print(f"Bit position {bit_position} has at least one '1'.")
+                spi.writebytes(ok)
             else:
                 print(f"Error: Bit position {bit_position} does not have any '1' values.")
+                spi.writebytes(error)  # Send error code if there is an issue with the data
     except:
         print("Error processing data_set 1.")
+        spi.writebytes(error)  # Send error code if there is an issue with the data
 
     try:
         print("for data_set 2")
@@ -256,10 +275,13 @@ def on_button_pressed():
             # For other positions, check the result and print accordingly
             if found_one:
                 print(f"Bit position {bit_position} has at least one '1'.")
+                spi.writebytes(ok)  # Send error code if there is an issue with the data
             else:
                 print(f"Error: Bit position {bit_position} does not have any '1' values.")
+                spi.writebytes(error)  # Send error code if there is an issue with the data
     except:
         print("Error processing data_set 2.")
+        spi.writebytes(error)  # Send error code if there is an issue with the data
 
     # Check the symbol data
     try:
@@ -268,6 +290,7 @@ def on_button_pressed():
             symbol = globals().get(idx)  # Access the variable by its name dynamically
             if 1 in symbol:
                 print(f"{idx} contains at least one '1'.")
+                spi.writebytes(ok)
     except:
         print("Error processing symbol data.")
 

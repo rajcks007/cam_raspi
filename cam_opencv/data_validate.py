@@ -1,3 +1,6 @@
+from spi import spi_init, send_message
+error, ok = spi_init()
+
 def data_valid(data) :
     # Loop through each bit position (from 0 to 6)
     for bit_position in range(7):  # We have 7 bits, so positions 0 to 6
@@ -22,5 +25,7 @@ def data_valid(data) :
         # For other positions, check the result and print accordingly
         if found_one:
             print(f"Bit position {bit_position} has at least one '1'.")
+            send_message(ok)
         else:
             print(f"Error: Bit position {bit_position} does not have any '1' values.")
+            send_message(error)
