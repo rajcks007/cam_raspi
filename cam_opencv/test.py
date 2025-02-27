@@ -76,10 +76,10 @@ def on_button_pressed():
         cropped_image = picam2.capture_array()
 
         # Define the cropping parameters (e.g., crop 50 pixels from each side)
-        left_crop = 50    # Number of pixels to crop from the left
-        right_crop = 270   # Number of pixels to crop from the right
-        top_crop = 30    # Number of pixels to crop from the top
-        bottom_crop = 80  # Number of pixels to crop from the bottom
+        left_crop = 70    # Number of pixels to crop from the left
+        right_crop = 250   # Number of pixels to crop from the right
+        top_crop = 50    # Number of pixels to crop from the top
+        bottom_crop = 60  # Number of pixels to crop from the bottom
 
         # Crop the image from all sides (left, right, top, and bottom)
         image = cropped_image[top_crop:-bottom_crop, left_crop:-right_crop] if right_crop > 0 and bottom_crop > 0 else \
