@@ -22,10 +22,10 @@ def cam_init(picam2):
 def cropped(cropped_image):
 
     # Define the cropping parameters (e.g., crop 50 pixels from each side)
-    left_crop   = 60         # Number of pixels to crop from the left
-    right_crop  = 280       # Number of pixels to crop from the right
-    top_crop    = 60         # Number of pixels to crop from the top
-    bottom_crop = 270        # Number of pixels to crop from the bottom
+    left_crop   = 50         # Number of pixels to crop from the left
+    right_crop  = 270       # Number of pixels to crop from the right
+    top_crop    = 10         # Number of pixels to crop from the top
+    bottom_crop = 100        # Number of pixels to crop from the bottom
 
     # Crop the image from all sides (left, right, top, and bottom)
     image = cropped_image[top_crop:-bottom_crop, left_crop:-right_crop] if right_crop > 0 and bottom_crop > 0 else \
