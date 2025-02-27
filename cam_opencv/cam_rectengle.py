@@ -15,7 +15,7 @@ def rectengle_fn(tr_opene, image):
         (x, y, w, h) = cv2.boundingRect(c)
 
         # If the contour is sufficiently large, it must be a digit
-        if (w >= 20 and w <= 150) and (h >= 100 and h <= 230):
+        if (w >= 20 and w <= 150) and (h >= 90 and h <= 230):
             digitCnts.append(c)
             # Draw the bounding box around each digit in green
             cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2) # Green for digit

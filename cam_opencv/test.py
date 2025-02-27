@@ -50,12 +50,12 @@ def on_button_pressed():
 
     # Set controls
     picam2.set_controls({
-        "Contrast": 0.8,       # Contrast range: -1.0 to 1.0
-        "Brightness": -0.2,     # Brightness range: -1.0 to 1.0
-        "Saturation": -1.0       # Adjust saturation
+        "Contrast": 0.9,       # Contrast range: -1.0 to 1.0
+        "Brightness": -0.1,     # Brightness range: -1.0 to 1.0
+        "Saturation": -1.8       # Adjust saturation
     })
     # set focus of camera
-    picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 35.0})
+    picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 45.0})
     start_time = time.time()  # Record the start time
     # Dictionary to store data dynamically for each detected digit (based on idx)
     digit_data = {}
@@ -74,10 +74,10 @@ def on_button_pressed():
         cropped_image = picam2.capture_array()
 
         # Define the cropping parameters (e.g., crop 50 pixels from each side)
-        left_crop = 0    # Number of pixels to crop from the left
-        right_crop = 250   # Number of pixels to crop from the right
-        top_crop = 0    # Number of pixels to crop from the top
-        bottom_crop = 30  # Number of pixels to crop from the bottom
+        left_crop = 60    # Number of pixels to crop from the left
+        right_crop = 280   # Number of pixels to crop from the right
+        top_crop = 60    # Number of pixels to crop from the top
+        bottom_crop = 70  # Number of pixels to crop from the bottom
 
         # Crop the image from all sides (left, right, top, and bottom)
         image = cropped_image[top_crop:-bottom_crop, left_crop:-right_crop] if right_crop > 0 and bottom_crop > 0 else \
@@ -108,7 +108,7 @@ def on_button_pressed():
             # compute the bounding box of the contour
             (x, y, w, h) = cv2.boundingRect(c)
             # if the contour is sufficiently large, it must be a digit
-            if (w >= 20 and w <= 160) and (h >= 190 and h <= 250):
+            if (w >= 20 and w <= 150) and (h >= 90 and h <= 230):
                 digitCnts.append(c)
                 # Draw the bounding box around each digit
                 cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2) 
@@ -118,7 +118,7 @@ def on_button_pressed():
             elif (w >= 25 and w <= 100) and (h >= 25 and h <= 80):
                 symbolCnts.append(c)
                 # Draw the bounding box around each symbol in blue
-                cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 3)  # Blue for symbols
+                cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 3)  # Red for symbols
 
         # Show the image with the bounding boxes drawn
         cv2.imshow("Detected Digits", image)
