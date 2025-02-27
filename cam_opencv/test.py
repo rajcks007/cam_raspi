@@ -10,12 +10,13 @@ import keyboard
 from gpiozero import *
 from signal import pause
 import spidev
-import itertools
+import importlib
+import sys
 
 picam2 = Picamera2()
 
 # Configure the button on GPIO pin 17
-button = Button(17, pull_up=False, bounce_time=0.2)
+button = Button(17, pull_up=False, bounce_time=0.1)
 Led_1 = LED(27)
 Led_2 = LED(22)
 
@@ -66,7 +67,7 @@ def on_button_pressed():
     while(1):
 
         elapsed_time = time.time() - start_time  # Calculate the elapsed time
-        if elapsed_time > 10:  # If n seconds have passed
+        if elapsed_time > 7:  # If n seconds have passed
             break  # Exit the loop
 
         cv2.waitKey(50)
@@ -217,12 +218,20 @@ def on_button_pressed():
                     file.write(f"{idx} = {validity}\n\n")
 
     try:
+        if "digit_data" in sys.modules:
+            del sys.modules["digit_data"]  # Remove old module completely
+        import digit_data
+        importlib.reload(digit_data)  # Force reload every time
         from digit_data import data_1, data_2
     except:
         print("Error importing digit_data from the files.")
         spi.writebytes(error)  # Send error code if there is an issue with the data
 
     try:
+        if "symbol_data" in sys.modules:
+            del sys.modules["symbol_data"]  # Remove old module completely
+        import symbol_data
+        importlib.reload(symbol_data)  # Force reload every time
         from symbol_data import symbol_1, symbol_2 # Adjust these imports based on the actual variables you need
     except:
         print("Error importing symbol_data from the files.")

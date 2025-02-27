@@ -6,12 +6,13 @@ from cam_digit import *
 from cam_symbol import *
 from data_validate import *
 from spi import *
+from data_Sym_import import *
 
 global picam2
 picam2 = Picamera2()
 
 # Configure the button on GPIO pin 17
-button = Button(17, pull_up=False, bounce_time=0.2)
+button = Button(17, pull_up=False, bounce_time=0.1)
 Led_1 = LED(27)
 Led_2 = LED(22)
 
@@ -34,7 +35,7 @@ def on_button_pressed():
     while(1):
 
         elapsed_time = time.time() - start_time  # Calculate the elapsed time
-        if elapsed_time > 10:  # If 10 seconds have passed
+        if elapsed_time > 7:  # If n seconds have passed
             break  # Exit the loop
 
         cv2.waitKey(50)
@@ -67,26 +68,26 @@ def on_button_pressed():
         #     break
 
     try:
-        from digit_data import data_1, data_2
+        data_1, data_2 = data_import()
     except:
         print("Error importing digit_data from the files.")
-        send_message(error)
+        spi.writebytes(error)  # Send error code if there is an issue with the data
 
     try:
-        from symbol_data import symbol_1, symbol_2 # Adjust these imports based on the actual variables you need
+        symbol_1, symbol_2 = symbol_import()
     except:
-        print("Error importing symbol_data from the files.")
-        #send_message(error)
+        print("Error importing digit_data from the files.")
+        #spi.writebytes(error)  # Send error code if there is an issue with the data
 
     try:
-        print("for data_set 1")
+        print("Try to validate data_set 1")
         data_valid(data_1)
     except:
         print("Error validating data_set 1")
         send_message(error)
 
     try:
-        print("for data_set 2")
+        print("Try to validate data_set 2")
         data_valid(data_2)
     except: 
         print("Error validating data_set 2")
@@ -116,9 +117,9 @@ def on_button_pressed():
     # Stop the camera
     cam_deinit(picam2)
     cv2.destroyAllWindows()
+    print("Waiting for button press. Press Ctrl+C to exit.")
 
 # Bind the callback to the button's press event
 button.when_pressed = on_button_pressed
 
-print("Waiting for button press. Press Ctrl+C to exit.")
 pause()  # Keeps the script running

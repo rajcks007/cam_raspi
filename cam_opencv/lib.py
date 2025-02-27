@@ -11,3 +11,5 @@ import keyboard
 from gpiozero import *
 from signal import pause
 import spidev
+import sys
+import importlib
