@@ -95,11 +95,12 @@ def on_button_pressed():
     # Check the symbol data
     try:
         print("Checking symbol data...")
-        for idx in symbol_data.keys():  # We loop through the keys (symbol names)
-            symbol = globals().get(idx)  # Access the variable by its name dynamically
-            if 1 in symbol:
-                print(f"{idx} contains at least one '1'.")
-                send_message(ok)
+        if 1 in symbol_1:
+            print("symbol_1 contains at least one 1")
+            spi.writebytes(ok)
+        if 1 in symbol_2:
+            print("symbol_2 contains at least one 1")
+            spi.writebytes(ok)
     except:
         print("Error processing symbol data.")
         #send_message(error) 
