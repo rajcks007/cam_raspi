@@ -76,8 +76,8 @@ def on_button_pressed():
         # Define the cropping parameters (e.g., crop 50 pixels from each side)
         left_crop = 50    # Number of pixels to crop from the left
         right_crop = 270   # Number of pixels to crop from the right
-        top_crop = 20    # Number of pixels to crop from the top
-        bottom_crop = 100  # Number of pixels to crop from the bottom
+        top_crop = 30    # Number of pixels to crop from the top
+        bottom_crop = 80  # Number of pixels to crop from the bottom
 
         # Crop the image from all sides (left, right, top, and bottom)
         image = cropped_image[top_crop:-bottom_crop, left_crop:-right_crop] if right_crop > 0 and bottom_crop > 0 else \
@@ -93,7 +93,7 @@ def on_button_pressed():
         thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
 
         kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 7))
-        tr_opene = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel, iterations=3)
+        tr_opene = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel, iterations=2)
 
         cv2.imshow('thresh_img', tr_opene)
 
@@ -164,7 +164,7 @@ def on_button_pressed():
                     on[i] = 1  # Segment is "on"
 
             # Print the status of the segments for each digit
-            # print(f"Digit_{idx + 1} at ({x}, {y}): {on}")
+            print(f"Digit_{idx + 1} at ({x}, {y}): {on}")
 
             # Dynamically store the data for each digit (using idx as the key)
             digit_data[f"data_{idx + 1}"] = digit_data.get(f"data_{idx + 1}", []) + [on]
@@ -316,9 +316,9 @@ def on_button_pressed():
     picam2.stop_preview()
     picam2.stop()
     cv2.destroyAllWindows()
+    print("Waiting for button press. Press Ctrl+C to exit.")
 
 # Bind the callback to the button's press event
 button.when_pressed = on_button_pressed
 
-print("Waiting for button press. Press Ctrl+C to exit.")
 pause()  # Keeps the script running
