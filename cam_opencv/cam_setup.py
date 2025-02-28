@@ -14,7 +14,7 @@ def cam_init(picam2):
     picam2.set_controls({
         "Contrast"  : 0.9,      # Contrast range: -1.0 to 1.0
         "Brightness": -0.1,     # Brightness range: -1.0 to 1.0
-        "Saturation": -1.8      # Adjust saturation
+        "Saturation": -2.0      # Adjust saturation
     })
 
     return picam2

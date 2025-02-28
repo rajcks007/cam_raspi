@@ -54,7 +54,7 @@ def on_button_pressed():
     picam2.set_controls({
         "Contrast": 0.9,       # Contrast range: -1.0 to 1.0
         "Brightness": -0.1,     # Brightness range: -1.0 to 1.0
-        "Saturation": -1.8       # Adjust saturation
+        "Saturation": -2.0       # Adjust saturation
     })
     # set focus of camera
     picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 45.0})
