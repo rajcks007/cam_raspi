@@ -8,7 +8,7 @@ def cam_init(picam2):
     picam2.start(show_preview=False)
 
     # set focus of camera
-    picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 45.0})
+    picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 80.0})
 
     # Set controls
     picam2.set_controls({
@@ -22,10 +22,10 @@ def cam_init(picam2):
 def cropped(cropped_image):
 
     # Define the cropping parameters (e.g., crop 50 pixels from each side)
-    left_crop   = 80         # Number of pixels to crop from the left
-    right_crop  = 240       # Number of pixels to crop from the right
+    left_crop   = 100         # Number of pixels to crop from the left
+    right_crop  = 90       # Number of pixels to crop from the right
     top_crop    = 30         # Number of pixels to crop from the top
-    bottom_crop = 70        # Number of pixels to crop from the bottom
+    bottom_crop = 1        # Number of pixels to crop from the bottom
 
     # Crop the image from all sides (left, right, top, and bottom)
     image = cropped_image[top_crop:-bottom_crop, left_crop:-right_crop] if right_crop > 0 and bottom_crop > 0 else \

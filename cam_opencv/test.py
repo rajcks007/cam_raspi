@@ -45,6 +45,7 @@ if not os.environ.get("DISPLAY"):
 
 # Callback function when the button is pressed
 def on_button_pressed():
+    start_time = time.time()  # Record the start time
     # start camera
     picam2.start(show_preview=False)
 
@@ -57,7 +58,7 @@ def on_button_pressed():
         "Saturation": -2.0       # Adjust saturation
     })
     # set focus of camera
-    picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 45.0})
+    picam2.set_controls({"AfMode": controls.AfModeEnum.Manual, "LensPosition": 80.0})
     start_time = time.time()  # Record the start time
     # Dictionary to store data dynamically for each detected digit (based on idx)
     digit_data = {}
@@ -76,10 +77,10 @@ def on_button_pressed():
         cropped_image = picam2.capture_array()
 
         # Define the cropping parameters (e.g., crop 50 pixels from each side)
-        left_crop = 70    # Number of pixels to crop from the left
-        right_crop = 250   # Number of pixels to crop from the right
-        top_crop = 50    # Number of pixels to crop from the top
-        bottom_crop = 60  # Number of pixels to crop from the bottom
+        left_crop = 100    # Number of pixels to crop from the left
+        right_crop = 80   # Number of pixels to crop from the right
+        top_crop = 30    # Number of pixels to crop from the top
+        bottom_crop = 1  # Number of pixels to crop from the bottom
 
         # Crop the image from all sides (left, right, top, and bottom)
         image = cropped_image[top_crop:-bottom_crop, left_crop:-right_crop] if right_crop > 0 and bottom_crop > 0 else \
@@ -110,7 +111,7 @@ def on_button_pressed():
             # compute the bounding box of the contour
             (x, y, w, h) = cv2.boundingRect(c)
             # if the contour is sufficiently large, it must be a digit
-            if (w >= 20 and w <= 150) and (h >= 90 and h <= 230):
+            if (w >= 20 and w <= 150) and (h >= 90 and h <= 250):
                 digitCnts.append(c)
                 # Draw the bounding box around each digit
                 cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2) 
@@ -322,6 +323,7 @@ def on_button_pressed():
         file.write('')
 
     Led_2.off()
+
     
     # Stop the camera
     picam2.stop_preview()
